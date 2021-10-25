@@ -5,15 +5,9 @@ class CategoryController {
   getAll = async (req, res) => {
     try {
       const category = await CategoryModel.find();
-      res.status(200).json({
-        status: true,
-        data: category,
-      });
+      res.status(200).json(category);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -24,10 +18,7 @@ class CategoryController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -43,15 +34,9 @@ class CategoryController {
     });
     try {
       const response = await CategoryModel.create(category);
-      res.status(200).json({
-        status: true,
-        data: response,
-      });
+      res.status(200).json(response);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -62,10 +47,7 @@ class CategoryController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -75,15 +57,9 @@ class CategoryController {
     if (!id) throw new Error('Please provide id param 🚩');
     try {
       const response = await CategoryModel.deleteOne({ _id: id });
-      res.status(200).json({
-        status: true,
-        data: response,
-      });
+      res.status(200).json(response);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 }

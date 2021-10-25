@@ -5,15 +5,9 @@ class AuthorController {
   getAll = async (req, res) => {
     try {
       const author = await AuthorModel.find();
-      res.status(200).json({
-        status: true,
-        data: author,
-      });
+      res.status(200).json(author);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -24,10 +18,7 @@ class AuthorController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -43,15 +34,9 @@ class AuthorController {
 
     try {
       const response = await AuthorModel.create(author);
-      res.status(200).json({
-        status: true,
-        data: response,
-      });
+      res.status(200).json(response);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -62,10 +47,7 @@ class AuthorController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -76,10 +58,7 @@ class AuthorController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 }

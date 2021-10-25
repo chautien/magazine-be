@@ -10,15 +10,9 @@ class ArticleController {
       const article = await ArticleModel.find()
         .populate(['author', 'category'])
         .sort({ created_at: -1 });
-      res.status(200).json({
-        status: true,
-        data: article,
-      });
+      res.status(200).json(article);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -29,10 +23,7 @@ class ArticleController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -57,15 +48,9 @@ class ArticleController {
     });
     try {
       const response = await ArticleModel.create(article);
-      res.status(200).json({
-        status: true,
-        data: response,
-      });
+      res.status(200).json(response);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -76,10 +61,7 @@ class ArticleController {
         status: true,
       });
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 
@@ -90,15 +72,9 @@ class ArticleController {
 
     try {
       const response = await ArticleModel.deleteOne({ _id: id });
-      res.status(200).json({
-        status: true,
-        data: response,
-      });
+      res.status(200).json(response);
     } catch (error) {
-      res.status(502).json({
-        status: false,
-        error,
-      });
+      res.status(502).json(error);
     }
   };
 }
