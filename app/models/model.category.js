@@ -3,9 +3,6 @@ const { Schema } = mongoose;
 
 const CategorySchema = new Schema(
   {
-    id: {
-      type: String,
-    },
     name: {
       type: String,
     },

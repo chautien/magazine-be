@@ -3,9 +3,6 @@ const { Schema } = mongoose;
 
 const ArticleSchema = new Schema(
   {
-    id: {
-      type: String,
-    },
     slug: {
       type: String,
     },

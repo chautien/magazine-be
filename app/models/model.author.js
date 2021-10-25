@@ -3,9 +3,6 @@ const { Schema } = mongoose;
 
 const AuthorSchema = new Schema(
   {
-    id: {
-      type: String,
-    },
     name: {
       type: String,
     },

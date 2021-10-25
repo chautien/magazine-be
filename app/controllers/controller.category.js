@@ -1,5 +1,5 @@
+const { textToSlug } = require('../../utils/text-to-slug');
 const CategoryModel = require('../models/model.category');
-
 class CategoryController {
   // [GET] Get all categories
   getAll = async (req, res) => {
@@ -33,9 +33,19 @@ class CategoryController {
 
   // [POST] Add new category
   create = async (req, res) => {
+    let { name, slug } = req.body;
+    if (!slug) slug = textToSlug(name);
+    if (!(name, slug)) throw new Error('Please fill all fileds 🚩');
+
+    const category = CategoryModel({
+      name,
+      slug,
+    });
     try {
+      const response = await CategoryModel.create(category);
       res.status(200).json({
         status: true,
+        data: response,
       });
     } catch (error) {
       res.status(502).json({
@@ -61,9 +71,13 @@ class CategoryController {
 
   // [DELETE] Delete category by condition
   delete = async (req, res) => {
+    const { id } = req.params;
+    if (!id) throw new Error('Please provide id param 🚩');
     try {
+      const response = await CategoryModel.deleteOne({ _id: id });
       res.status(200).json({
         status: true,
+        data: response,
       });
     } catch (error) {
       res.status(502).json({

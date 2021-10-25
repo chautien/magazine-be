@@ -33,9 +33,19 @@ class AuthorController {
 
   // [POST] Add new author
   create = async (req, res) => {
+    const { id, name, avatar } = req.body;
+    if (!(id, name, avatar)) throw new Error('Please fill all fileds 🚩');
+
+    const author = AuthorModel({
+      name,
+      avatar,
+    });
+
     try {
+      const response = await AuthorModel.create(author);
       res.status(200).json({
         status: true,
+        data: response,
       });
     } catch (error) {
       res.status(502).json({
