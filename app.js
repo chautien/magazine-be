@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const rootRouter = require('./routes/route.index');
 const db = require('./configs/config.connect-db');
+const favicon = require('serve-favicon');
 
 db.connect();
 const app = express();
@@ -17,6 +18,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(favicon(path.join(__dirname, 'public/images', 'rikka.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 rootRouter(app);
