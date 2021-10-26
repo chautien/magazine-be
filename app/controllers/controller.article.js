@@ -47,6 +47,19 @@ class ArticleController {
     }
   };
 
+  // [GET] Get aritcle if banner active is true
+  getArticleBanner = async (req, res) => {
+    try {
+      const acticleBannerActive = await ArticleModel.find({
+        banner_active: true,
+      });
+      console.log(acticleBannerActive);
+      res.status(200).json(acticleBannerActive);
+    } catch (error) {
+      res.status(502).json(error);
+    }
+  };
+
   // [POST] Add new article
   create = async (req, res) => {
     const {
