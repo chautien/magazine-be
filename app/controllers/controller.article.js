@@ -10,12 +10,25 @@ class ArticleController {
     const limit = parseInt(req.query.limit) || 10;
     console.log(page, limit);
     try {
+      const totalRows = await ArticleModel.count();
       const article = await ArticleModel.find()
         .populate(['author', 'category'])
         .sort({ created_at: -1 })
         .skip(page > 0 ? (page - 1) * limit : 0)
         .limit(limit);
-      res.status(200).json(article);
+      if (article.length <= 0)
+        res.status(200).json({
+          count: 0,
+          message: 'Not found!',
+        });
+      res.status(200).json({
+        data: article,
+        paginate: {
+          totalRows,
+          page,
+          limit,
+        },
+      });
     } catch (error) {
       res.status(502).json(error);
     }
