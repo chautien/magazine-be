@@ -52,8 +52,7 @@ class ArticleController {
     try {
       const acticleBannerActive = await ArticleModel.find({
         banner_active: true,
-      });
-      console.log(acticleBannerActive);
+      }).select('title introduce thumbnail banner_active');
       res.status(200).json(acticleBannerActive);
     } catch (error) {
       res.status(502).json(error);
