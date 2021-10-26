@@ -9,6 +9,13 @@ const ArticleSchema = new Schema(
     title: {
       type: String,
     },
+    thumbnail: {
+      type: String,
+    },
+    banner_active: {
+      type: Boolean,
+      default: false,
+    },
     introduce: {
       type: String,
     },

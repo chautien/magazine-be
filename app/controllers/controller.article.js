@@ -6,10 +6,15 @@ const ArticleModel = require('../models/model.article');
 class ArticleController {
   // [GET] Get all articles
   getAll = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    console.log(page, limit);
     try {
       const article = await ArticleModel.find()
         .populate(['author', 'category'])
-        .sort({ created_at: -1 });
+        .sort({ created_at: -1 })
+        .skip(page > 0 ? (page - 1) * limit : 0)
+        .limit(limit);
       res.status(200).json(article);
     } catch (error) {
       res.status(502).json(error);
@@ -18,10 +23,12 @@ class ArticleController {
 
   // [GET] Get once article by condition
   getOnce = async (req, res) => {
+    const { slug } = req.params;
     try {
-      res.status(200).json({
-        status: true,
-      });
+      const article = await ArticleModel.findOne({ slug });
+      article
+        ? res.status(200).json(article)
+        : res.status(200).json({ status: false, message: 'Not found' });
     } catch (error) {
       res.status(502).json(error);
     }
@@ -29,17 +36,38 @@ class ArticleController {
 
   // [POST] Add new article
   create = async (req, res) => {
-    const { title, introduce, content, time_to_read, category, author } =
-      req.body;
+    const {
+      title,
+      introduce,
+      content,
+      time_to_read,
+      category,
+      author,
+      thumbnail,
+      banner_active,
+    } = req.body;
     let { slug } = req.body;
 
     if (!slug) slug = textToSlug(title);
-    if (!(slug, title, introduce, content, time_to_read, category, author))
-      throw new Error('Please fill all fileds 🚩');
+    if (
+      !(title,
+      introduce,
+      content,
+      time_to_read,
+      category,
+      author,
+      thumbnail,
+      banner_active)
+    )
+      res
+        .status(500)
+        .json({ status: false, message: 'Please fill all field!' });
 
     const article = ArticleModel({
       slug,
       title,
+      thumbnail,
+      banner_active,
       introduce,
       content,
       time_to_read,
