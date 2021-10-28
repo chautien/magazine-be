@@ -38,7 +38,10 @@ class ArticleController {
   getOnce = async (req, res) => {
     const { slug } = req.params;
     try {
-      const article = await ArticleModel.findOne({ slug });
+      const article = await ArticleModel.findOne({ slug }).populate([
+        'author',
+        'category',
+      ]);
       article
         ? res.status(200).json(article)
         : res.status(200).json({ status: false, message: 'Not found' });
