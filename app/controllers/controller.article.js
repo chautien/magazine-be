@@ -50,6 +50,24 @@ class ArticleController {
     }
   };
 
+  // [GET] Get all article by name
+  getByName = async (req, res) => {
+    const { query } = req.params;
+    try {
+      const article = await ArticleModel.find({
+        slug: { $regex: '.*' + query + '.*' },
+      });
+      if (article.length <= 0)
+        res.status(200).json({
+          count: 0,
+          message: 'Not found!',
+        });
+      res.status(200).json(article);
+    } catch (error) {
+      res.status(502).json(error);
+    }
+  };
+
   // [GET] Get aritcle if banner active is true
   getArticleBanner = async (req, res) => {
     try {
