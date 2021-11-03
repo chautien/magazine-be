@@ -52,7 +52,7 @@ class ArticleController {
 
   // [GET] Get all article by name
   getByName = async (req, res) => {
-    const { query } = req.params;
+    const { query } = req.query;
     try {
       const article = await ArticleModel.find({
         slug: { $regex: '.*' + query + '.*' },
