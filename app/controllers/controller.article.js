@@ -91,20 +91,12 @@ class ArticleController {
     let { slug } = req.body;
 
     if (!slug) slug = textToSlug(title);
-    if (
-      !(title,
-      introduce,
-      content,
-      time_to_read,
-      category,
-      author,
-      thumbnail,
-      banner_active)
-    )
+    if (!banner_active) {
       res
         .status(500)
         .json({ status: false, message: 'Please fill all field!' });
-
+      return;
+    }
     const article = ArticleModel({
       slug,
       title,
@@ -126,7 +118,26 @@ class ArticleController {
 
   // [PUT] Update article by condition
   update = async (req, res) => {
+    const { id } = req.params;
+    const { title, introduce, content, thumbnail } = req.body;
+    let { slug } = req.body;
+
+    if (!slug) slug = textToSlug(title);
+
+    const article = {
+      slug,
+      title,
+      thumbnail,
+      introduce,
+      content,
+    };
     try {
+      const response = await ArticleModel.updateOne({ _id: id }, article);
+      console.log(
+        '🚀 ~ file: controller.article.js ~ line 145 ~ ArticleController ~ update= ~ response',
+        response
+      );
+
       res.status(200).json({
         status: true,
       });
