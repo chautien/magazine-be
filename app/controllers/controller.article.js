@@ -36,9 +36,9 @@ class ArticleController {
 
   // [GET] Get once article by condition
   getOnce = async (req, res) => {
-    const { slug } = req.params;
+    const { id } = req.params;
     try {
-      const article = await ArticleModel.findOne({ slug }).populate([
+      const article = await ArticleModel.findOne({ _id: id }).populate([
         'author',
         'category',
       ]);
