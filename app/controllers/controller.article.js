@@ -55,7 +55,7 @@ class ArticleController {
     const { query } = req.query;
     try {
       const article = await ArticleModel.find({
-        title: { $regex: '.*' + query + '.*' },
+        slug: { $regex: '.*' + query + '.*' },
       });
       if (article.length <= 0) res.status(500);
       res.status(200).json(article);
