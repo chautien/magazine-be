@@ -91,7 +91,7 @@ class ArticleController {
     let { slug } = req.body;
 
     if (!slug) slug = textToSlug(title);
-    if (!banner_active) {
+    if (banner_active === undefined) {
       res
         .status(500)
         .json({ status: false, message: 'Please fill all field!' });
