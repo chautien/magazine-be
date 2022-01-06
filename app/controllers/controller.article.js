@@ -8,7 +8,7 @@ class ArticleController {
   getAll = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    console.log(page, limit);
+
     try {
       const totalRows = await ArticleModel.count();
       const article = await ArticleModel.find()
@@ -16,21 +16,10 @@ class ArticleController {
         .sort({ created_at: -1 })
         .skip(page > 0 ? (page - 1) * limit : 0)
         .limit(limit);
-      if (article.length <= 0)
-        res.status(200).json({
-          count: 0,
-          message: 'Not found!',
-        });
-      res.status(200).json({
-        data: article,
-        paginate: {
-          totalRows,
-          page,
-          limit,
-        },
-      });
+      if (article.length <= 0) return res.status(204).json();
+      return res.status(200).json(article);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
@@ -42,11 +31,10 @@ class ArticleController {
         'author',
         'category',
       ]);
-      article
-        ? res.status(200).json(article)
-        : res.status(200).json({ status: false, message: 'Not found' });
+
+      return article ? res.status(200).json(article) : res.status(400).json([]);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
@@ -57,10 +45,10 @@ class ArticleController {
       const article = await ArticleModel.find({
         slug: { $regex: '.*' + query + '.*' },
       });
-      if (article.length <= 0) res.status(500);
-      res.status(200).json(article);
+      if (article.length <= 0) return res.status(204).json([]);
+      return res.status(200).json(article);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
@@ -70,9 +58,9 @@ class ArticleController {
       const acticleBannerActive = await ArticleModel.find({
         banner_active: true,
       }).select('title introduce thumbnail banner_active slug');
-      res.status(200).json(acticleBannerActive);
+      return res.status(204).json(acticleBannerActive);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
@@ -86,17 +74,9 @@ class ArticleController {
       category,
       author,
       thumbnail,
-      banner_active,
+      banner_active = false,
     } = req.body;
-    let { slug } = req.body;
-
-    if (!slug) slug = textToSlug(title);
-    if (banner_active === undefined) {
-      res
-        .status(500)
-        .json({ status: false, message: 'Please fill all field!' });
-      return;
-    }
+    let { slug = textToSlug(title) } = req.body;
     const article = ArticleModel({
       slug,
       title,
@@ -110,9 +90,9 @@ class ArticleController {
     });
     try {
       const response = await ArticleModel.create(article);
-      res.status(200).json(response);
+      return res.status(201).json(response);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
@@ -120,10 +100,7 @@ class ArticleController {
   update = async (req, res) => {
     const { id } = req.params;
     const { title, introduce, content, thumbnail } = req.body;
-    let { slug } = req.body;
-
-    if (!slug) slug = textToSlug(title);
-
+    let { slug = textToSlug(title) } = req.body;
     const article = {
       slug,
       title,
@@ -133,29 +110,21 @@ class ArticleController {
     };
     try {
       const response = await ArticleModel.updateOne({ _id: id }, article);
-      console.log(
-        '🚀 ~ file: controller.article.js ~ line 145 ~ ArticleController ~ update= ~ response',
-        response
-      );
-
-      res.status(200).json({
-        status: true,
-      });
+      return res.status(201).json(response);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
   // [DELETE] Delete article by condition
   delete = async (req, res) => {
     const { id } = req.params;
-    if (!id) throw new Error('Please provide id param 🚩');
-
     try {
+      if (!id) throw new Error('Please provide id param 🚩');
       const response = await ArticleModel.deleteOne({ _id: id });
-      res.status(200).json(response);
+      return res.status(200).json(response);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 }

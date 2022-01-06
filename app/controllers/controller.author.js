@@ -5,20 +5,18 @@ class AuthorController {
   getAll = async (req, res) => {
     try {
       const author = await AuthorModel.find();
-      res.status(200).json(author);
+      return res.status(200).json(author);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
   // [GET] Get once author by condition
   getOnce = async (req, res) => {
     try {
-      res.status(200).json({
-        status: true,
-      });
+      res.status(200).json([]);
     } catch (error) {
-      res.status(502).json(error);
+      res.status(500).json(error);
     }
   };
 
@@ -34,31 +32,27 @@ class AuthorController {
 
     try {
       const response = await AuthorModel.create(author);
-      res.status(200).json(response);
+      return res.status(201).json(response);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
   // [PUT] Update author by condition
   update = async (req, res) => {
     try {
-      res.status(200).json({
-        status: true,
-      });
+      return res.status(201).json([]);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 
   // [DELETE] Delete author by condition
   delete = async (req, res) => {
     try {
-      res.status(200).json({
-        status: true,
-      });
+      return res.status(200).json([]);
     } catch (error) {
-      res.status(502).json(error);
+      return res.status(500).json(error);
     }
   };
 }
